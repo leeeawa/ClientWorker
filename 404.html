@@ -1,7 +1,8 @@
+
 <html lang="zh-hans" dir="ltr">
 
 <head>
-    <title>ClientWorker Installation</title>
+    <title>Installing...</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <style>
         @keyframes rotate-fully {
@@ -230,10 +231,10 @@
             }
         }
         changeType('ring');
-        $$$('#info').innerHTML = '正在安装ClientWorker...';
+        $$$('#info').innerHTML = 'Installing...';
         setTimeout(() => {
             changeType('error');
-            $$$('#info').innerHTML = '安装程序超时...三秒后重启...';
+            $$$('#info').innerHTML = 'Something Wrong.Will restart in 3 seconds.';
             setTimeout(() => {
                 location.reload();
             }, 3000);
@@ -248,32 +249,32 @@
                 trycount++;
                 if (trycount > 10) {
                     changeType('error');
-                    $$$('#info').innerHTML = '安装ClientWorker失败，三秒后刷新重启';
+                    $$$('#info').innerHTML = 'Something Wrong.Will restart in 3 seconds.';
                     setTimeout(() => {
                         location.reload();
                     }, 3000);
                 }
-                $$$('#info').innerHTML = 'ClientWorker已安装，等待配置中...';
+                $$$('#info').innerHTML = 'Installation succeeded';
                 fetch('/cw-cgi/api?type=config')
                     .then(res => res.text())
                     .then(text => {
                         if (text === 'ok') {
                             changeType('success');
-                            $$$('#info').innerHTML = 'ClientWorker已安装并配置完成，正在无刷新启动...';
+                            $$$('#info').innerHTML = 'Installation succeeded';
                             fetch(window.location.href).then(res => res.text()).then(text => {
                                 document.open()
                                 document.write(text);
                                 document.close();
                             });
                         } else {
-                            $$$('#info').innerHTML = 'ClientWorker配置失败，可能还没有准备好，正在进行再次尝试...';
+                            $$$('#info').innerHTML = 'Something Wrong.Will try again in few seconds.';
                             setTimeout(() => {
                                 conf()
                             }, 200);
                         }
                     }).catch(err => {
                         changeType('error');
-                        $$$('#info').innerHTML = 'ClientWorker配置失败，请检查您的配置！错误原因：' + err.message;
+                        $$$('#info').innerHTML = 'Something Wrong.Reason：' + err.message;
                     });
             }
             setTimeout(() => {
@@ -281,7 +282,7 @@
             }, 50);
         }).catch(err => {
             changeType('error');
-            $$$('#info').innerHTML = 'ClientWorker安装失败，错误原因：' + err.message;
+            $$$('#info').innerHTML = 'Something Wrong.Reason：' + err.message;
         });
     }, 0);
 </script>
